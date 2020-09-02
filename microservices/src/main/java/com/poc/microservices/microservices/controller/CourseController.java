@@ -1,6 +1,6 @@
 package com.poc.microservices.microservices.controller;
 
-import com.poc.microservices.microservices.model.Course;
+import com.poc.microservices.curso.model.Course;
 import com.poc.microservices.microservices.service.CourseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,6 @@
-package com.poc.microservices.microservices.repository;
+package com.poc.microservices.curso.repository;
 
-import com.poc.microservices.microservices.model.Course;
+import com.poc.microservices.curso.model.Course;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface CourseRepository extends PagingAndSortingRepository<Course, Long> {

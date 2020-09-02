@@ -1,4 +1,4 @@
-package com.poc.microservices.microservices.model;
+package com.poc.microservices.curso.model;
 
 import lombok.*;
 
