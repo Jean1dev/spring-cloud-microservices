@@ -1,6 +1,7 @@
 package com.poc.microservices.auth.security;
 
 import com.poc.microservices.auth.security.filter.EnsureAuthenticatedFilter;
+import com.poc.microservices.auth.security.user.UserDetailsServiceImp;
 import com.poc.microservices.curso.property.JwtConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserDetailsService service;
+    private UserDetailsServiceImp service;
 
     private final JwtConfig jwtConfig = new JwtConfig();
 

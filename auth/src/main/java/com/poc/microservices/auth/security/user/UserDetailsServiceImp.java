@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -22,7 +21,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        ApplicationUser applicationUser = repository.findByUsername(userName);
+        ApplicationUser applicationUser = repository.findByuserName(userName);
 
         if (Objects.isNull(applicationUser)) {
             throw new UsernameNotFoundException("user nao existe");
