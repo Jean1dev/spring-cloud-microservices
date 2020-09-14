@@ -19,6 +19,8 @@ public class JwtConfig {
 
     private final String privateKey = "auhsuahsouahosuaho";
 
+    private final String type = "encrypted";
+
     @Getter
     public static class Header {
         private final String name = "Authorization";
