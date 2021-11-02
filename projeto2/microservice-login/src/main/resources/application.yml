@@ -1,0 +1,37 @@
+security:
+  sessions: ALWAYS
+
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 3
+
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/temp
+    username: jeanfernandes
+    password: admin
+    driverClassName: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+    properties:
+      hibernate:
+        hbm2ddl:
+          import_files: data.sql
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: true
+
+zuul:
+  host:
+    connect-timeout-millis: 10000
+    socket-timeout-millis: 60000
+  routes:
+    micro2:
+      path: /micro2/**
+      sensitiveHeaders:
+      url: http://localhost:8081
