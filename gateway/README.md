@@ -1,36 +1,31 @@
 # Spring Cloud Gateway - Microservices Gateway
 
-Este projeto implementa um gateway usando Spring Cloud Gateway seguindo os princípios de **Clean Architecture** e **Clean Code** para rotear requisições para 3 microserviços: user-service, product-service e order-service.
+Este projeto implementa um gateway simples usando Spring Cloud Gateway para rotear requisições para 3 microserviços: user-service, product-service e order-service.
 
-## Arquitetura
-
-O projeto segue os princípios de Clean Architecture com as seguintes camadas:
+## Estrutura Organizada
 
 ```
 src/main/java/com/example/gateway/
-├── domain/                    # Camada de Domínio
-│   ├── model/                # Entidades e Value Objects
-│   └── service/              # Serviços de domínio
-├── application/              # Camada de Aplicação
-│   ├── port/                 # Interfaces (Ports)
-│   └── service/              # Casos de uso
-├── infrastructure/           # Camada de Infraestrutura
-│   ├── config/               # Configurações
-│   └── adapter/              # Adaptadores externos
-└── interfaces/               # Camada de Interface
-    └── rest/                 # Controllers REST
+├── GatewayApplication.java   # Aplicação principal que compõe as rotas
+└── apis/                     # Configurações das APIs
+    ├── BaseApiConfig.java    # Classe base com funcionalidades comuns
+    ├── UserApiConfig.java    # Configuração da API de usuários
+    ├── ProductApiConfig.java # Configuração da API de produtos
+    └── OrderApiConfig.java   # Configuração da API de pedidos
+
+src/main/resources/
+├── application.yml          # Configuração principal
+└── application-docker.yml   # Configuração para Docker
 ```
 
 ## Funcionalidades
 
-- **Roteamento**: Roteia requisições para os microserviços baseado no path
-- **Circuit Breaker**: Implementa circuit breaker usando Resilience4J para resiliência
+- **Roteamento Simples**: Roteia requisições para os microserviços baseado no path
+- **Circuit Breaker**: Implementa circuit breaker usando Resilience4J
 - **Fallback**: Endpoints de fallback quando os serviços estão indisponíveis
-- **Clean Architecture**: Separação clara de responsabilidades
-- **SOLID Principles**: Aplicação dos princípios SOLID
-- **Testabilidade**: Cobertura de testes unitários
-- **Configuração Externa**: Configurações flexíveis via properties
-- **Tratamento de Exceções**: Handler centralizado para exceções
+- **Middleware de Logging**: Registra todas as requisições e respostas com detalhes de roteamento
+- **Configuração Flexível**: Funciona em desenvolvimento e Docker
+- **Código Limpo**: Implementação direta e fácil de entender
 
 ## Rotas Configuradas
 
@@ -49,6 +44,31 @@ src/main/java/com/example/gateway/
 - `GET /fallback/user` - Fallback para user-service
 - `GET /fallback/product` - Fallback para product-service
 - `GET /fallback/order` - Fallback para order-service
+
+## Middleware de Logging
+
+O gateway inclui um middleware de logging que registra todas as requisições e respostas:
+
+### Logs de Requisição
+```
+🚀 [2024-01-15 10:30:45.123] INCOMING REQUEST: GET http://localhost:8083/users -> Target: user-service
+📋 [2024-01-15 10:30:45.124] Headers - Host: localhost:8083, User-Agent: curl/7.68.0, X-Forwarded-For: null
+🔍 [2024-01-15 10:30:45.125] Query Params: {page=[1], size=[10]}
+```
+
+### Logs de Resposta
+```
+✅ [2024-01-15 10:30:45.456] RESPONSE SENT: GET http://localhost:8083/users -> Status: 200 OK
+```
+
+### Configuração de Logging
+```yaml
+logging:
+  level:
+    com.example.gateway.filters: INFO
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG
+```
 
 ## Como Executar
 
@@ -118,33 +138,53 @@ curl http://localhost:8083/actuator/gateway/routes
 - Product Service: 8081
 - Order Service: 8082
 
-## Princípios de Clean Code e Clean Architecture Aplicados
+## Características da Implementação
 
-### Clean Architecture
-- **Separação de Camadas**: Domínio, Aplicação, Infraestrutura e Interface
-- **Inversão de Dependência**: Uso de interfaces (ports) para desacoplamento
-- **Independência de Frameworks**: Lógica de negócio isolada do Spring
+### Organização
+- **Separação de Responsabilidades**: Cada API tem sua própria configuração
+- **Classe Base**: Funcionalidades comuns centralizadas
+- **Composição**: GatewayApplication compõe todas as configurações
 
-### SOLID Principles
-- **Single Responsibility**: Cada classe tem uma única responsabilidade
-- **Open/Closed**: Extensível via interfaces, fechado para modificação
-- **Liskov Substitution**: Implementações substituíveis via interfaces
-- **Interface Segregation**: Interfaces específicas e coesas
-- **Dependency Inversion**: Dependências de abstrações, não implementações
+### Simplicidade
+- **Código Limpo**: Estrutura organizada e fácil de entender
+- **Fácil Manutenção**: Cada API pode ser modificada independentemente
+- **Configuração Mínima**: Apenas o necessário para funcionar
 
-### Clean Code
-- **Nomes Descritivos**: Classes e métodos com nomes claros
-- **Funções Pequenas**: Métodos com responsabilidade única
-- **Comentários Desnecessários**: Código autoexplicativo
-- **Tratamento de Erros**: Exceções centralizadas e consistentes
-- **Testabilidade**: Código facilmente testável
+### Flexibilidade
+- **Desenvolvimento Local**: URLs localhost para desenvolvimento
+- **Ambiente Docker**: URLs de containers para produção
+- **Perfis Spring**: Detecção automática do ambiente
 
-### Java 21 Features
-- **Records**: Uso de Records para Value Objects imutáveis
-- **Pattern Matching**: Switch expressions com Pattern Matching
-- **Stream API**: Uso de streams e collectors modernos
-- **Validation**: Validação integrada nos Records
-- **Builder Pattern**: Mantido para compatibilidade e flexibilidade
+## Scripts de Teste
+
+O projeto inclui scripts shell para facilitar os testes do gateway:
+
+### test-gateway.sh
+Script completo com formatação colorida e JSON formatado (requer jq):
+```bash
+./test-gateway.sh
+```
+
+### test-gateway-simple.sh
+Script simples sem dependências externas:
+```bash
+./test-gateway-simple.sh
+```
+
+### test-api.sh
+Script para testar APIs específicas:
+```bash
+./test-api.sh user list      # Lista de usuários
+./test-api.sh product get    # Produto específico
+./test-api.sh order fallback # Fallback de pedidos
+```
+
+### Teste Manual
+```bash
+curl http://localhost:8083/users
+curl http://localhost:8083/products
+curl http://localhost:8083/orders
+```
 
 ## Tecnologias Utilizadas
 

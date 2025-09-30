@@ -1,18 +1,9 @@
 spring:
   application:
-    name: gateway
+    name: gateway-test
 
 server:
-  port: 8083
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,gateway
-  endpoint:
-    health:
-      show-details: always
+  port: 0
 
 resilience4j:
   circuitbreaker:
@@ -32,11 +23,3 @@ resilience4j:
         wait-duration-in-open-state: 30s
         sliding-window-size: 10
         minimum-number-of-calls: 5
-
-logging:
-  level:
-    com.example.gateway.filters: INFO
-    org.springframework.cloud.gateway: DEBUG
-    reactor.netty.http.client: DEBUG
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"

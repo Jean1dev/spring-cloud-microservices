@@ -1,13 +1,2 @@
-gateway:
-  services:
-    USER_SERVICE:
-      url: http://user-service:8080
-    PRODUCT_SERVICE:
-      url: http://product-service:8081
-    ORDER_SERVICE:
-      url: http://order-service:8082
-
-logging:
-  level:
-    com.example.gateway: INFO
-    org.springframework.cloud.gateway: INFO
+# Configuração para ambiente Docker
+# As URLs dos serviços são configuradas diretamente no código
