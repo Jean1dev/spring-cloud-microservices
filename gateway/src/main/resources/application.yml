@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: gateway
+
+server:
+  port: 8083
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway,metrics
+  endpoint:
+    health:
+      show-details: always
+    gateway:
+      enabled: true
+
+gateway:
+  services:
+    USER_SERVICE:
+      url: http://localhost:8080
+    PRODUCT_SERVICE:
+      url: http://localhost:8081
+    ORDER_SERVICE:
+      url: http://localhost:8082
+
+resilience4j:
+  circuitbreaker:
+    default-config:
+      failure-rate-threshold: 50
+      wait-duration-in-open-state-seconds: 30
+      sliding-window-size: 10
+      minimum-number-of-calls: 5
+    instances:
+      user-service-cb:
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+      product-service-cb:
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+      order-service-cb:
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+
+logging:
+  level:
+    com.example.gateway: DEBUG
+    org.springframework.cloud.gateway: DEBUG
