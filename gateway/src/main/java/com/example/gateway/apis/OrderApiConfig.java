@@ -6,6 +6,11 @@ import org.springframework.stereotype.Component;
 public class OrderApiConfig extends BaseApiConfig {
 
     @Override
+    public String getServiceName() {
+        return "order-service";
+    }
+
+    @Override
     public String getServiceUrl() {
         return isDockerProfile() ? "http://order-service:8082" : "http://localhost:8082";
     }

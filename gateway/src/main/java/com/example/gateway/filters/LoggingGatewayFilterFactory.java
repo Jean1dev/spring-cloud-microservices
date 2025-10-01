@@ -26,7 +26,7 @@ public class LoggingGatewayFilterFactory extends AbstractGatewayFilterFactory<Lo
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             String timestamp = LocalDateTime.now().format(formatter);
-            
+
             // Log da requisição de entrada
             logger.info("🚀 [{}] INCOMING REQUEST: {} {} -> Target: {}",
                 timestamp,
@@ -44,12 +44,11 @@ public class LoggingGatewayFilterFactory extends AbstractGatewayFilterFactory<Lo
             );
             
             // Log dos parâmetros de query
-            if (request.getQueryParams().size() > 0) {
+            if (!request.getQueryParams().isEmpty()) {
                 logger.info("🔍 [{}] Query Params: {}", timestamp, request.getQueryParams());
             }
             
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {
-                // Log da resposta
                 String responseTimestamp = LocalDateTime.now().format(formatter);
                 logger.info("✅ [{}] RESPONSE SENT: {} {} -> Status: {}",
                     responseTimestamp,

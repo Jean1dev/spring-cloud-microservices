@@ -39,51 +39,12 @@ public class GatewayApplication {
 	@Bean
 	public RouteLocator routes(RouteLocatorBuilder builder) {
 		return builder.routes()
-			.route("user-service", r -> r.path(userApiConfig.getDirectPath())
-				.filters(f -> f
-					.filter(loggingFilterFactory.apply(config -> config.setTargetService("user-service")))
-					.circuitBreaker(config -> config
-						.setName(userApiConfig.getCircuitBreakerName())
-						.setFallbackUri(userApiConfig.getFallbackUri())))
-				.uri(userApiConfig.getServiceUrl()))
-			.route("product-service", r -> r.path(productApiConfig.getDirectPath())
-				.filters(f -> f
-					.filter(loggingFilterFactory.apply(config -> config.setTargetService("product-service")))
-					.circuitBreaker(config -> config
-						.setName(productApiConfig.getCircuitBreakerName())
-						.setFallbackUri(productApiConfig.getFallbackUri())))
-				.uri(productApiConfig.getServiceUrl()))
-			.route("order-service", r -> r.path(orderApiConfig.getDirectPath())
-				.filters(f -> f
-					.filter(loggingFilterFactory.apply(config -> config.setTargetService("order-service")))
-					.circuitBreaker(config -> config
-						.setName(orderApiConfig.getCircuitBreakerName())
-						.setFallbackUri(orderApiConfig.getFallbackUri())))
-				.uri(orderApiConfig.getServiceUrl()))
-			.route("user-service-prefix", r -> r.path(userApiConfig.getPrefixedPath())
-				.filters(f -> f
-					.filter(loggingFilterFactory.apply(config -> config.setTargetService("user-service")))
-					.rewritePath(userApiConfig.getRewritePath(), userApiConfig.getRewriteReplacement())
-					.circuitBreaker(config -> config
-						.setName(userApiConfig.getCircuitBreakerName())
-						.setFallbackUri(userApiConfig.getFallbackUri())))
-				.uri(userApiConfig.getServiceUrl()))
-			.route("product-service-prefix", r -> r.path(productApiConfig.getPrefixedPath())
-				.filters(f -> f
-					.filter(loggingFilterFactory.apply(config -> config.setTargetService("product-service")))
-					.rewritePath(productApiConfig.getRewritePath(), productApiConfig.getRewriteReplacement())
-					.circuitBreaker(config -> config
-						.setName(productApiConfig.getCircuitBreakerName())
-						.setFallbackUri(productApiConfig.getFallbackUri())))
-				.uri(productApiConfig.getServiceUrl()))
-			.route("order-service-prefix", r -> r.path(orderApiConfig.getPrefixedPath())
-				.filters(f -> f
-					.filter(loggingFilterFactory.apply(config -> config.setTargetService("order-service")))
-					.rewritePath(orderApiConfig.getRewritePath(), orderApiConfig.getRewriteReplacement())
-					.circuitBreaker(config -> config
-						.setName(orderApiConfig.getCircuitBreakerName())
-						.setFallbackUri(orderApiConfig.getFallbackUri())))
-				.uri(orderApiConfig.getServiceUrl()))
+			.route("user-service", userApiConfig.buildDirectRoute(loggingFilterFactory))
+			.route("product-service", productApiConfig.buildDirectRoute(loggingFilterFactory))
+			.route("order-service", orderApiConfig.buildDirectRoute(loggingFilterFactory))
+			.route("user-service-prefix", userApiConfig.buildPrefixedRoute(loggingFilterFactory))
+			.route("product-service-prefix", productApiConfig.buildPrefixedRoute(loggingFilterFactory))
+			.route("order-service-prefix", orderApiConfig.buildPrefixedRoute(loggingFilterFactory))
 			.build();
 	}
 

@@ -6,6 +6,11 @@ import org.springframework.stereotype.Component;
 public class UserApiConfig extends BaseApiConfig {
 
     @Override
+    public String getServiceName() {
+        return "user-service";
+    }
+
+    @Override
     public String getServiceUrl() {
         return isDockerProfile() ? "http://user-service:8080" : "http://localhost:8080";
     }
