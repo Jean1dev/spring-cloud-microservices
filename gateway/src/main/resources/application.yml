@@ -15,6 +15,21 @@ spring:
       discovery:
         locator:
           enabled: false
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: ${keycloak.client-id}
+            client-secret: ${keycloak.client-secret}
+            scope: openid, profile, email
+        provider:
+          keycloak:
+            issuer-uri: ${keycloak.host}/realms/${keycloak.realm}
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${keycloak.host}/realms/${keycloak.realm}/protocol/openid-connect/certs
+          issuer-uri: ${keycloak.host}/realms/${keycloak.realm}
 
 
 # -----------------------------------------------------------------------------
@@ -88,7 +103,7 @@ resilience4j:
 # CONFIGURAÇÕES DE SEGURANÇA (KEYCLOAK)
 # -----------------------------------------------------------------------------
 keycloak:
-  enabled: true
+  enabled: false
   realm: gateway-client
   host: http://localhost:8084
   client-id: gateway-client
