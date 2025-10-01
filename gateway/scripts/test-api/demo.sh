@@ -78,6 +78,7 @@ main() {
     echo -e "${WHITE}   • Use ./test-gateway.sh para teste completo${NC}"
     echo -e "${WHITE}   • Use ./test-api.sh [api] [endpoint] para testes específicos${NC}"
     echo -e "${WHITE}   • Use ./test-gateway-simple.sh se não tiver jq instalado${NC}"
+    echo -e "${WHITE}   • Use ../../scripts/run.sh test-api [script] para executar via script principal${NC}"
     echo ""
 }
 
