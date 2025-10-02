@@ -27,23 +27,20 @@ public class LoggingGatewayFilterFactory extends AbstractGatewayFilterFactory<Lo
             ServerHttpRequest request = exchange.getRequest();
             String timestamp = LocalDateTime.now().format(formatter);
 
-            // Log da requisição de entrada
             logger.info("🚀 [{}] INCOMING REQUEST: {} {} -> Target: {}",
                 timestamp,
                 request.getMethod(),
                 request.getURI(),
                 config.getTargetService()
             );
-            
-            // Log dos headers importantes
+
             logger.info("📋 [{}] Headers - Host: {}, User-Agent: {}, X-Forwarded-For: {}",
                 timestamp,
                 request.getHeaders().getFirst("Host"),
                 request.getHeaders().getFirst("User-Agent"),
                 request.getHeaders().getFirst("X-Forwarded-For")
             );
-            
-            // Log dos parâmetros de query
+
             if (!request.getQueryParams().isEmpty()) {
                 logger.info("🔍 [{}] Query Params: {}", timestamp, request.getQueryParams());
             }
