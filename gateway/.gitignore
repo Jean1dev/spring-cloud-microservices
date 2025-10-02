@@ -35,3 +35,4 @@ out/
 
 ### VS Code ###
 .vscode/
+/logs/gateway.log.2025-10-01.0.gz
