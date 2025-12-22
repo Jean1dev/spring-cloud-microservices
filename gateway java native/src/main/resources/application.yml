@@ -1,0 +1,130 @@
+# =============================================================================
+# SPRING CLOUD GATEWAY - CONFIGURAÇÃO PRINCIPAL
+# =============================================================================
+# Este arquivo contém todas as configurações padrão para produção
+# Os perfis específicos sobrescrevem apenas as configurações necessárias
+
+# -----------------------------------------------------------------------------
+# CONFIGURAÇÕES DA APLICAÇÃO
+# -----------------------------------------------------------------------------
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: ${keycloak.client-id}
+            client-secret: ${keycloak.client-secret}
+            scope: openid, profile, email
+        provider:
+          keycloak:
+            issuer-uri: ${keycloak.host}/realms/${keycloak.realm}
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${keycloak.host}/realms/${keycloak.realm}/protocol/openid-connect/certs
+          issuer-uri: ${keycloak.host}/realms/${keycloak.realm}
+
+
+# -----------------------------------------------------------------------------
+# CONFIGURAÇÕES DO SERVIDOR
+# -----------------------------------------------------------------------------
+server:
+  port: 8083
+
+# -----------------------------------------------------------------------------
+# CONFIGURAÇÕES DE MONITORAMENTO E HEALTH CHECK
+# -----------------------------------------------------------------------------
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway,circuitbreakers
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+      show-components: always
+    info:
+      enabled: true
+  info:
+    env:
+      enabled: true
+    java:
+      enabled: true
+    build:
+      enabled: true
+
+# -----------------------------------------------------------------------------
+# CONFIGURAÇÕES DE RESILIÊNCIA (CIRCUIT BREAKER)
+# -----------------------------------------------------------------------------
+# As rotas e fallbacks são definidos no código Java (classes *ApiConfig)
+# Aqui configuramos apenas os parâmetros dos circuit breakers
+resilience4j:
+  circuitbreaker:
+    instances:
+      user-cb:
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+      product-cb:
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+      order-cb:
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+  timelimiter:
+    instances:
+      user-cb:
+        timeout-duration: 5s
+      product-cb:
+        timeout-duration: 5s
+      order-cb:
+        timeout-duration: 5s
+
+# -----------------------------------------------------------------------------
+# CONFIGURAÇÕES DE SEGURANÇA (KEYCLOAK)
+# -----------------------------------------------------------------------------
+keycloak:
+  enabled: false
+  realm: gateway-client
+  host: http://localhost:8084
+  client-id: gateway-client
+  client-secret: wiUc08ZfgTD0eFXbt5c3hRBGSBwi6WAp
+
+# -----------------------------------------------------------------------------
+# CONFIGURAÇÕES DE LOGGING
+# -----------------------------------------------------------------------------
+logging:
+  level:
+    root: INFO
+    com.example.gateway: DEBUG
+    com.example.gateway.filters: INFO
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.security: DEBUG
+    reactor.netty.http.client: DEBUG
+    io.netty: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/gateway.log
+    max-size: 10MB
+    max-history: 30

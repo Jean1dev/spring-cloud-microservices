@@ -1,0 +1,18 @@
+# =============================================================================
+# PERFIL: NO-SECURITY
+# =============================================================================
+# Este perfil desabilita a segurança para desenvolvimento e testes
+# Herda todas as configurações do application.yml principal
+
+# -----------------------------------------------------------------------------
+# CONFIGURAÇÕES DE SEGURANÇA (DESABILITADA)
+# -----------------------------------------------------------------------------
+keycloak:
+  enabled: false
+
+# -----------------------------------------------------------------------------
+# CONFIGURAÇÕES DE LOGGING (AJUSTADAS PARA DESENVOLVIMENTO)
+# -----------------------------------------------------------------------------
+logging:
+  level:
+    org.springframework.security: WARN

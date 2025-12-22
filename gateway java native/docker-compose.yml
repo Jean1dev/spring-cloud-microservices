@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  user-service:
+    build: ./apis/api1
+    container_name: user-service
+    ports:
+      - "8080:8080"
+
+  product-service:
+    build: ./apis/api2
+    container_name: product-service
+    ports:
+      - "8081:8081"
+
+  order-service:
+    build: ./apis/api3
+    container_name: order-service
+    ports:
+      - "8082:8082"
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.0
+    container_name: keycloak
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8084:8080"
+    command: start-dev
