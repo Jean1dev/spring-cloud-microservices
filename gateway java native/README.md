@@ -93,6 +93,29 @@ Execute todos os serviços incluindo o gateway:
 docker-compose up --build
 ```
 
+### Build Docker Manual
+
+Se encontrar erro `UnknownHostException: services.gradle.org` durante o build, use o script que configura DNS:
+
+```bash
+./scripts/docker-build.sh
+```
+
+Ou manualmente com DNS explícito:
+```bash
+docker build --dns 8.8.8.8 --dns 8.8.4.4 -t gatewayjavanative:latest .
+```
+
+**Solução Permanente**: Configure DNS no Docker daemon (`/etc/docker/daemon.json`):
+```json
+{
+  "dns": ["8.8.8.8", "8.8.4.4"]
+}
+```
+Depois reinicie: `sudo systemctl restart docker`
+
+Para diagnosticar problemas de rede: `./scripts/docker-fix-dns.sh`
+
 ## Exemplos de Uso
 
 ### Testando as APIs através do Gateway
