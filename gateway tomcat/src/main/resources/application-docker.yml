@@ -14,7 +14,20 @@
 # CONFIGURAÇÕES DE SEGURANÇA (KEYCLOAK DOCKER)
 # -----------------------------------------------------------------------------
 keycloak:
-  auth-server-url: http://keycloak:8080
+  enabled: false
+  auth-server-url: http://keycloak:8084
+
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
+  security:
+    oauth2:
+      client:
+        registration: {}
+      resourceserver:
+        jwt: {}
 
 # -----------------------------------------------------------------------------
 # CONFIGURAÇÕES DE LOGGING (DOCKER)

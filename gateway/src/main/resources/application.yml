@@ -107,7 +107,7 @@ keycloak:
   realm: gateway-client
   host: http://localhost:8084
   client-id: gateway-client
-  client-secret: wiUc08ZfgTD0eFXbt5c3hRBGSBwi6WAp
+  client-secret: HdIdvoO4gnjmsFNoFBS9xy4bz5ZQLCAz
 
 # -----------------------------------------------------------------------------
 # CONFIGURAÇÕES DE LOGGING

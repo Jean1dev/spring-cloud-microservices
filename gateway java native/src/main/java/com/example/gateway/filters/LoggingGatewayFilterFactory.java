@@ -60,6 +60,9 @@ public class LoggingGatewayFilterFactory extends AbstractGatewayFilterFactory<Lo
     public static class Config {
         private String targetService;
 
+        public Config() {
+        }
+
         public String getTargetService() {
             return targetService;
         }

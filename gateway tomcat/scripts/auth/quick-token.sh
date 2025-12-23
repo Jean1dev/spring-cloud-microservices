@@ -6,7 +6,7 @@
 KEYCLOAK_HOST="http://localhost:8084"
 REALM="gateway-client"
 CLIENT_ID="gateway-client"
-CLIENT_SECRET="pVEzsGdgzIowgav488hxyIa8eLjR7LyV"
+CLIENT_SECRET="HdIdvoO4gnjmsFNoFBS9xy4bz5ZQLCAz"
 
 TOKEN_URL="$KEYCLOAK_HOST/realms/$REALM/protocol/openid-connect/token"
 

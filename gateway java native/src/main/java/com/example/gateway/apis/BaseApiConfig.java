@@ -27,23 +27,31 @@ public abstract class BaseApiConfig {
     public abstract String getServiceName();
 
     public Function<PredicateSpec, Buildable<Route>> buildDirectRoute(LoggingGatewayFilterFactory loggingFilterFactory) {
-        return r -> r.path(getDirectPath())
-            .filters(f -> f
-                .filter(loggingFilterFactory.apply(config -> config.setTargetService(getServiceName())))
-                .circuitBreaker(config -> config
-                    .setName(getCircuitBreakerName())
-                    .setFallbackUri(getFallbackUri())))
-            .uri(getServiceUrl());
+        return r -> {
+            LoggingGatewayFilterFactory.Config loggingConfig = new LoggingGatewayFilterFactory.Config();
+            loggingConfig.setTargetService(getServiceName());
+            return r.path(getDirectPath())
+                .filters(f -> f
+                    .filter(loggingFilterFactory.apply(loggingConfig))
+                    .circuitBreaker(config -> config
+                        .setName(getCircuitBreakerName())
+                        .setFallbackUri(getFallbackUri())))
+                .uri(getServiceUrl());
+        };
     }
 
     public Function<PredicateSpec, Buildable<Route>> buildPrefixedRoute(LoggingGatewayFilterFactory loggingFilterFactory) {
-        return r -> r.path(getPrefixedPath())
-            .filters(f -> f
-                .filter(loggingFilterFactory.apply(config -> config.setTargetService(getServiceName())))
-                .rewritePath(getRewritePath(), getRewriteReplacement())
-                .circuitBreaker(config -> config
-                    .setName(getCircuitBreakerName())
-                    .setFallbackUri(getFallbackUri())))
-            .uri(getServiceUrl());
+        return r -> {
+            LoggingGatewayFilterFactory.Config loggingConfig = new LoggingGatewayFilterFactory.Config();
+            loggingConfig.setTargetService(getServiceName());
+            return r.path(getPrefixedPath())
+                .filters(f -> f
+                    .filter(loggingFilterFactory.apply(loggingConfig))
+                    .rewritePath(getRewritePath(), getRewriteReplacement())
+                    .circuitBreaker(config -> config
+                        .setName(getCircuitBreakerName())
+                        .setFallbackUri(getFallbackUri())))
+                .uri(getServiceUrl());
+        };
     }
 }

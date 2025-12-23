@@ -15,21 +15,17 @@ spring:
       discovery:
         locator:
           enabled: false
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.oauth2.client.reactive.ReactiveOAuth2ClientAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.oauth2.resource.reactive.ReactiveOAuth2ResourceServerAutoConfiguration
   security:
     oauth2:
       client:
-        registration:
-          keycloak:
-            client-id: ${keycloak.client-id}
-            client-secret: ${keycloak.client-secret}
-            scope: openid, profile, email
-        provider:
-          keycloak:
-            issuer-uri: ${keycloak.host}/realms/${keycloak.realm}
+        registration: {}
+        provider: {}
       resourceserver:
-        jwt:
-          jwk-set-uri: ${keycloak.host}/realms/${keycloak.realm}/protocol/openid-connect/certs
-          issuer-uri: ${keycloak.host}/realms/${keycloak.realm}
+        jwt: {}
 
 
 # -----------------------------------------------------------------------------
@@ -107,7 +103,7 @@ keycloak:
   realm: gateway-client
   host: http://localhost:8084
   client-id: gateway-client
-  client-secret: pVEzsGdgzIowgav488hxyIa8eLjR7LyV
+  client-secret: HdIdvoO4gnjmsFNoFBS9xy4bz5ZQLCAz
 
 # -----------------------------------------------------------------------------
 # CONFIGURAÇÕES DE LOGGING

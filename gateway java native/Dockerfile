@@ -24,6 +24,8 @@ COPY --from=build /code/build/native/nativeCompile/gateway /work/gateway
 
 RUN chmod +x /work/gateway && chmod 775 /work
 
-EXPOSE 8080
+EXPOSE 8083
+
+ENV SPRING_PROFILES_ACTIVE=docker
 
 CMD ["./gateway", "-Xmx170M", "-Xms50M", "-Xss156k"]
