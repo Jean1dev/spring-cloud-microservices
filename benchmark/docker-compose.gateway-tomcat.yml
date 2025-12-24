@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   user-service:
-    build: ../gateway tomcat/apis/api1
+    build: ./services-unstable/api1
     container_name: user-service
     ports:
       - "8080:8080"
@@ -19,7 +19,7 @@ services:
           memory: 100M
 
   product-service:
-    build: ../gateway tomcat/apis/api2
+    build: ./services-unstable/api2
     container_name: product-service
     ports:
       - "8081:8081"
@@ -36,7 +36,7 @@ services:
           memory: 100M
 
   order-service:
-    build: ../gateway tomcat/apis/api3
+    build: ./services-unstable/api3
     container_name: order-service
     ports:
       - "8082:8082"
