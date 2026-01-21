@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  user-service:
+    build: ./services-unstable/api1
+    container_name: user-service
+    ports:
+      - "8080:8080"
+    mem_limit: 200m
+    mem_reservation: 100m
+    cpus: '0.5'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 200M
+        reservations:
+          cpus: '0.25'
+          memory: 100M
+
+  product-service:
+    build: ./services-unstable/api2
+    container_name: product-service
+    ports:
+      - "8081:8081"
+    mem_limit: 200m
+    mem_reservation: 100m
+    cpus: '0.5'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 200M
+        reservations:
+          cpus: '0.25'
+          memory: 100M
+
+  order-service:
+    build: ./services-unstable/api3
+    container_name: order-service
+    ports:
+      - "8082:8082"
+    mem_limit: 200m
+    mem_reservation: 100m
+    cpus: '0.5'
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 200M
+        reservations:
+          cpus: '0.25'
+          memory: 100M
+
+  gateway:
+    build:
+      context: ../gateway
+      dockerfile: Dockerfile
+    container_name: gateway-benchmark
+    ports:
+      - "8083:8083"
+    depends_on:
+      - user-service
+      - product-service
+      - order-service
+    mem_limit: 500m
+    mem_reservation: 250m
+    cpus: '1.5'
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 500M
+        reservations:
+          cpus: '0.5'
+          memory: 250M
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+

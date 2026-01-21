@@ -1,0 +1,52 @@
+# =============================================================================
+# PERFIL: TEST
+# =============================================================================
+# Este perfil contém configurações específicas para testes
+# Herda todas as configurações do application.yml principal
+
+# -----------------------------------------------------------------------------
+# CONFIGURAÇÕES DE SEGURANÇA (DESABILITADA PARA TESTES)
+# -----------------------------------------------------------------------------
+keycloak:
+  enabled: false
+
+# -----------------------------------------------------------------------------
+# CONFIGURAÇÕES DE LOGGING (TESTES)
+# -----------------------------------------------------------------------------
+logging:
+  level:
+    root: WARN
+    com.example.gateway: DEBUG
+    org.springframework.cloud.gateway: WARN
+    org.springframework.security: WARN
+    reactor.netty.http.client: WARN
+
+# -----------------------------------------------------------------------------
+# CONFIGURAÇÕES DE RESILIÊNCIA (TESTES - CONFIGURAÇÕES MAIS RÁPIDAS)
+# -----------------------------------------------------------------------------
+resilience4j:
+  circuitbreaker:
+    instances:
+      user-cb:
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 5s
+        sliding-window-size: 5
+        minimum-number-of-calls: 2
+      product-cb:
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 5s
+        sliding-window-size: 5
+        minimum-number-of-calls: 2
+      order-cb:
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 5s
+        sliding-window-size: 5
+        minimum-number-of-calls: 2
+  timelimiter:
+    instances:
+      user-cb:
+        timeout-duration: 2s
+      product-cb:
+        timeout-duration: 2s
+      order-cb:
+        timeout-duration: 2s
